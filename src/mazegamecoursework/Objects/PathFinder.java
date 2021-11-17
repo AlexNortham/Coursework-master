@@ -42,10 +42,11 @@ public class PathFinder {
                 y = next.getY();
             }
             if(progress){
-                if(current == end){
+                if(current.equals(end)){
                     return stack;
                 }
                 stack.add(current);
+                board[x][y].setSearched(true);
                 boolean[] directionsBooleans = getPaths(temp, x, y);
                 ArrayList<String> directions = new ArrayList<String>();
                 if (directionsBooleans[0]) {
@@ -71,25 +72,25 @@ public class PathFinder {
                 }
                 try {
                     if (chosenDirection.equals("up")) {
-                        if (board[x][y - 1].isVisited() == false) {
+                        if (board[x][y - 1].isSearched() == false) {
 
                             y--;
                         }
                     }
                     if (chosenDirection.equals("right")) {
-                        if (board[x + 1][y].isVisited() == false) {
+                        if (board[x + 1][y].isSearched() == false) {
 
                             x++;
                         }
                     }
                     if (chosenDirection.equals("down")) {
-                        if (board[x][y + 1].isVisited() == false) {
+                        if (board[x][y + 1].isSearched() == false) {
 
                             y++;
                         }
                     }
                     if (chosenDirection.equals("left")) {
-                        if (board[x - 1][y].isVisited() == false) {
+                        if (board[x - 1][y].isSearched() == false) {
 
                             x--;
                         }

@@ -6,6 +6,8 @@
 package mazegamecoursework.Objects;
 
 
+
+
 public class Coords {
     private int x;
     private int y;
@@ -30,5 +32,18 @@ public class Coords {
         this.x = x;
         this.y = y;
     }
-   
+
+
+    public boolean equals(Coords coords) {
+        int x = coords.getX();
+        int y = coords.getY();
+        if(this.x == x && this.y == y){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
+
 }

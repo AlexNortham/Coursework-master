@@ -13,6 +13,9 @@ public class Cell {
     private boolean pathdown;
     private boolean pathright;
     private boolean searched;
+    private boolean isOrange = false;
+    private boolean isEnd = false;
+    private boolean isStart = false;
 
     public boolean isVisited() {
         return visited;
@@ -60,5 +63,29 @@ public class Cell {
 
     public void setSearched(boolean searched) {
         this.searched = searched;
+    }
+
+    public boolean isOrange() {
+        return isOrange;
+    }
+
+    public void setOrange(boolean orange) {
+        isOrange = orange;
+    }
+
+    public boolean isEnd() {
+        return isEnd;
+    }
+
+    public void setEnd(boolean end) {
+        isEnd = end;
+    }
+
+    public boolean isStart() {
+        return isStart;
+    }
+
+    public void setStart(boolean start) {
+        isStart = start;
     }
 }

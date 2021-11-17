@@ -1,142 +1,48 @@
 
 package mazegamecoursework.Objects;
 
-import java.awt.Component;
-import javax.accessibility.AccessibleContext;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.event.EventListenerList;
-import javax.swing.plaf.ComponentUI;
 
-public class Player extends JLabel {
-    private ImageIcon downFacingStill;
-    private ImageIcon downFacingMoving;
-    private ImageIcon upFacingStill;
-    private ImageIcon upFacingMoving;
-    private ImageIcon leftFacingStill;
-    private ImageIcon leftFacingMoving;
-    private ImageIcon rightFacingStill;
-    private ImageIcon rightFacingMoving;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
-    public ImageIcon getDownFacingStill() {
-        return downFacingStill;
+public class Player {
+    private BufferedImage icon;
+    private int x = 0;
+    private int y = 0;
+
+    public void setX(int x) {
+        this.x = x;
     }
 
-    public void setDownFacingStill(ImageIcon downFacingStill) {
-        this.downFacingStill = downFacingStill;
+    public void setY(int y) {
+        this.y = y;
     }
 
-    public ImageIcon getDownFacingMoving() {
-        return downFacingMoving;
+    public void setIcon(String address){
+        try {
+            icon = ImageIO.read(getClass().getResource(address));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
-    public void setDownFacingMoving(ImageIcon downFacingMoving) {
-        this.downFacingMoving = downFacingMoving;
+    public BufferedImage getIcon() {
+        return icon;
     }
 
-    public ImageIcon getUpFacingStill() {
-        return upFacingStill;
+    public void changeX(int change){
+        this.x = this.x + change;
+    }
+    public void changeY(int change){
+        this.y = this.y + change;
     }
 
-    public void setUpFacingStill(ImageIcon upFacingStill) {
-        this.upFacingStill = upFacingStill;
+    public int getX() {
+        return x;
     }
 
-    public ImageIcon getUpFacingMoving() {
-        return upFacingMoving;
+    public int getY() {
+        return y;
     }
-
-    public void setUpFacingMoving(ImageIcon upFacingMoving) {
-        this.upFacingMoving = upFacingMoving;
-    }
-
-    public ImageIcon getLeftFacingStill() {
-        return leftFacingStill;
-    }
-
-    public void setLeftFacingStill(ImageIcon leftFacingStill) {
-        this.leftFacingStill = leftFacingStill;
-    }
-
-    public ImageIcon getLeftFacingMoving() {
-        return leftFacingMoving;
-    }
-
-    public void setLeftFacingMoving(ImageIcon leftFacingMoving) {
-        this.leftFacingMoving = leftFacingMoving;
-    }
-
-    public ImageIcon getRightFacingStill() {
-        return rightFacingStill;
-    }
-
-    public void setRightFacingStill(ImageIcon rightFacingStill) {
-        this.rightFacingStill = rightFacingStill;
-    }
-
-    public ImageIcon getRightFacingMoving() {
-        return rightFacingMoving;
-    }
-
-    public void setRightFacingMoving(ImageIcon rightFacingMoving) {
-        this.rightFacingMoving = rightFacingMoving;
-    }
-
-    public Component getLabelFor() {
-        return labelFor;
-    }
-
-    public void setLabelFor(Component labelFor) {
-        this.labelFor = labelFor;
-    }
-
-    public ComponentUI getUi() {
-        return ui;
-    }
-
-    public void setUi(ComponentUI ui) {
-        this.ui = ui;
-    }
-
-    public EventListenerList getListenerList() {
-        return listenerList;
-    }
-
-    public void setListenerList(EventListenerList listenerList) {
-        this.listenerList = listenerList;
-    }
-
-    public AccessibleContext getAccessibleContext() {
-        return accessibleContext;
-    }
-
-    public void setAccessibleContext(AccessibleContext accessibleContext) {
-        this.accessibleContext = accessibleContext;
-    }
-
-    public Player(String string, Icon icon, int i) {
-        super(string, icon, i);
-    }
-
-    public Player(String string, int i) {
-        super(string, i);
-    }
-
-    public Player(String string) {
-        super(string);
-    }
-
-    public Player(Icon icon, int i) {
-        super(icon, i);
-    }
-
-    public Player(Icon icon) {
-        super(icon);
-    }
-
-    public Player() {
-    }
-
-    
 }
