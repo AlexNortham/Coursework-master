@@ -3,11 +3,12 @@ package mazegamecoursework.Objects;
 
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Player {
-    private BufferedImage icon;
+    private ImageIcon icon;
     private int x = 0;
     private int y = 0;
 
@@ -19,15 +20,11 @@ public class Player {
         this.y = y;
     }
 
-    public void setIcon(String address){
-        try {
-            icon = ImageIO.read(getClass().getResource(address));
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+    public void setIcon(ImageIcon icon){
+        this.icon = icon;
     }
 
-    public BufferedImage getIcon() {
+    public ImageIcon getIcon() {
         return icon;
     }
 

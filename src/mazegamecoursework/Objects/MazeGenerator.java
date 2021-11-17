@@ -48,10 +48,10 @@ public class MazeGenerator {
         end = pickEnd();
         start = pickStart();
         setUpActionListener();
+        setUpKeyListener();
         fillCells();
         carveTo(0, 0);
-        layeredPane.setSize(1920, 1080);
-        layeredPane.setVisible(true);
+
         displayJLabels();
         setUpPlayer();
 
@@ -73,6 +73,11 @@ public class MazeGenerator {
     }
 
     public void displayJLabels() {
+        layeredPane.setSize(1920, 1080);
+        layeredPane.setVisible(true);
+
+        setUpPlayer();
+
         String path = System.getProperty("user.dir");
         try {
             jframe.setUndecorated(true);
@@ -118,7 +123,7 @@ public class MazeGenerator {
                 JLabel label = new JLabel(icon);
                 label.setIcon(icon);
                 label.setBounds(x, y, 32, 32);
-                layeredPane.add(label, new Integer(1));
+                layeredPane.add(label, new Integer(0));
                 System.out.print(directions + " ");
 
             }
@@ -127,7 +132,9 @@ public class MazeGenerator {
         solve.setBounds(1856, 0, 32, 32);
         solve.setSize(64, 32);
         solve.setText("Solve");
-        layeredPane.add(solve, new Integer(1));
+        layeredPane.add(solve, new Integer(0));
+        layeredPane.add(playerLabel, new Integer(1));
+        layeredPane.repaint();
         jframe.repaint();
     }
 
@@ -137,13 +144,14 @@ public class MazeGenerator {
         String path = System.getProperty("user.dir");
         ImageIcon icon = new ImageIcon(path + "\\mazeImages\\player.png");
         player = new Player();
-        player.setIcon(path + "\\mazeImages\\player.png");
+        player.setIcon(icon);
         player.setX(x);
         player.setY(y);
-        ImageIcon image = new ImageIcon(player.getIcon());
-        playerLabel.setIcon(image);
+
+        playerLabel.setIcon(player.getIcon());
         playerLabel.setBounds(player.getX(), player.getY(), 16, 16);
-        layeredPane.add(playerLabel, new Integer(0));
+
+
 
     }
 
@@ -153,7 +161,13 @@ public class MazeGenerator {
 
         }
 
-        layeredPane.removeAll();
+        //layeredPane.removeAll();
+        Component[] components = layeredPane.getComponents();
+        for (Component component: components){
+            layeredPane.remove(component);
+        }
+        layeredPane.revalidate();
+        layeredPane.repaint();
         displayJLabels();
     }
 
@@ -348,26 +362,39 @@ public class MazeGenerator {
         KeyListener keyListener = new KeyListener() {
             @Override
             public void keyTyped(KeyEvent keyEvent) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent keyEvent) {
                 int key = keyEvent.getKeyCode();
                 if(key == KeyEvent.VK_R){
 
                 }
                 if (key == keyEvent.VK_UP){
-
+                    if(isLegal("up")) {
+                        player.setY(player.getY() - 32);
+                        playerLabel.setBounds(player.getX(), player.getY(), 16, 16);
+                    }
                 }
                 if (key == keyEvent.VK_RIGHT){
-
+                    if(isLegal("right")) {
+                        player.setX(player.getX() + 32);
+                        playerLabel.setBounds(player.getX(), player.getY(), 16, 16);
+                    }
                 }
                 if(key == keyEvent.VK_DOWN){
-
+                    if(isLegal("down")) {
+                        player.setY(player.getY() + 32);
+                        playerLabel.setBounds(player.getX(), player.getY(), 16, 16);
+                    }
                 }
                 if(key == keyEvent.VK_LEFT){
-
+                    if(isLegal("left")) {
+                        player.setX(player.getX() - 32);
+                        playerLabel.setBounds(player.getX(), player.getY(), 16, 16);
+                    }
                 }
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
 
             }
 
@@ -376,6 +403,38 @@ public class MazeGenerator {
 
             }
         };
+        jframe.addKeyListener(keyListener);
+        layeredPane.addKeyListener(keyListener);
+    }
+
+    private boolean isLegal(String direction){
+        int x = (((player.getX()-8)/32)-1);
+        int y = (((player.getY()-8)/32)-2);
+        Cell temp = board[x][y];
+        switch (direction){
+            case ("up"):
+                if(temp.isPathup()){
+                    return true;
+                }
+                break;
+            case ("right"):
+                if(temp.isPathright()){
+                    return true;
+                }
+                break;
+            case ("down"):
+                if(temp.isPathdown()){
+                    return true;
+                }
+                break;
+            case ("left"):
+                if (temp.isPathleft()){
+                    return true;
+                }
+                break;
+        }
+        return false;
+
     }
 
 
