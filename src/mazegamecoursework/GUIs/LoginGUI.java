@@ -14,6 +14,7 @@ import mazegamecoursework.SQLClass;
 import mazegamecoursework.Objects.Settings;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.ResultSet;
 
 public class LoginGUI extends Application {
@@ -24,7 +25,7 @@ public class LoginGUI extends Application {
     public Label Error;
     public Button LoginButton;
     public Button Back;
-    private Settings settings;
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -41,7 +42,8 @@ public class LoginGUI extends Application {
         String email = EnterEmail.getText();
         String password = EnterPassword.getText();
         String sqlQuery = ("SELECT * FROM Accounts where EmailAddress = '" + email + "'");
-        ResultSet rs = SQLClass.query(SQLClass.getConnection(), sqlQuery);
+        Connection con = SQLClass.getConnection();
+        ResultSet rs = SQLClass.query(con, sqlQuery);
         try {
             while (rs.next()) {
                 String databaseEmail = rs.getString("EmailAddress");
@@ -49,7 +51,8 @@ public class LoginGUI extends Application {
                 PasswordHasher passhash = new PasswordHasher();
                 String hashedPassword = passhash.HashString(password);
                 if(email.equals(databaseEmail) && hashedPassword.equals(databasePasswordHashed)){
-                    settings.setEmail(email);
+                    Settings.setEmail(email);
+                    Settings.setName(rs.getString("Username"));
 
                     try {
                         Parent root = FXMLLoader.load(getClass().getResource("GameStartGUI.fxml"));

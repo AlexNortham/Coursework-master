@@ -45,5 +45,11 @@ public class Coords {
 
     }
 
-
+    @Override
+    public String toString() {
+        return "Coords{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
 }

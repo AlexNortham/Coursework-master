@@ -28,26 +28,24 @@ public class PathFinder {
 
             Cell temp = board[x][y];
             Coords current = new Coords(x, y);
-            if(temp.isSearched()){
+            if(temp.isSearched()){ //This line checks whether the current coords have already been searched
                 int stackSize = stack.size();
-                stack.remove(stackSize - 1);
+                stack.remove(stackSize - 1); //removes the current cell from the stack
                 stackSize--;
-                next = stack.get(stackSize - 1);
-                stack.remove(stackSize - 1);
-                board[next.getX()][next.getY()].setSearched(false);
-                System.out.print(Integer.toString(next.getX()) + " ");
-                System.out.println(Integer.toString(next.getY()));
+                next = stack.get(stackSize - 1); //sets the next cell to the previous one visited
+                stack.remove(stackSize - 1); //removes the next cell from the stack
+                board[next.getX()][next.getY()].setSearched(false); //sets the next cell to not searched
                 progress = false;
                 x = next.getX();
-                y = next.getY();
+                y = next.getY(); //sets the current coords as the next coords
             }
             if(progress){
                 if(current.equals(end)){
-                    return stack;
+                    return stack; //This checks whether the current coords are the end of the maze. If they are, they are returned.
                 }
                 stack.add(current);
-                board[x][y].setSearched(true);
-                boolean[] directionsBooleans = getPaths(temp, x, y);
+                board[x][y].setSearched(true); //Sets the current coords to searched
+                boolean[] directionsBooleans = getPaths(temp, x, y); //Gets a list of all the possible paths not yet searched
                 ArrayList<String> directions = new ArrayList<String>();
                 if (directionsBooleans[0]) {
                     directions.add("up");
@@ -66,38 +64,38 @@ public class PathFinder {
                 try {
                     Random random = new Random();
                     int randomInt = random.nextInt(size);
-                    chosenDirection = directions.get(randomInt);
+                    chosenDirection = directions.get(randomInt); //This chooses a random direction to search out of all the currently selected directions
                 }catch(Exception e){
                     chosenDirection = "";
                 }
-                try {
+                try { //This try catch statement moves the currently selected coords by 1 in the direction previously selected
                     if (chosenDirection.equals("up")) {
-                        if (board[x][y - 1].isSearched() == false) {
+                        if (!board[x][y - 1].isSearched()) {
 
                             y--;
                         }
                     }
                     if (chosenDirection.equals("right")) {
-                        if (board[x + 1][y].isSearched() == false) {
+                        if (!board[x + 1][y].isSearched()) {
 
                             x++;
                         }
                     }
                     if (chosenDirection.equals("down")) {
-                        if (board[x][y + 1].isSearched() == false) {
+                        if (!board[x][y + 1].isSearched()) {
 
                             y++;
                         }
                     }
                     if (chosenDirection.equals("left")) {
-                        if (board[x - 1][y].isSearched() == false) {
+                        if (!board[x - 1][y].isSearched()) {
 
                             x--;
                         }
                     }
 
                 } catch (Exception e) {
-                    //e.printStackTrace();
+
                 }
             }
 
@@ -108,12 +106,12 @@ public class PathFinder {
     public boolean[] getPaths(Cell cell, int x, int y){
         boolean[] directions = {false,false,false,false};
         if(cell.isPathup()){
-            try {
+            try { //This try catch statement checks all the cells immediately surrounding the currently selected one and changes the corresponding position in the directions array to true if said cell is traversable to and if it has not already been searched
                 Cell temp = board[x][y - 1];
-                if (temp.isSearched() == false) {
+                if (!temp.isSearched()) {
                     directions[0] = true;
                 }
-            } catch (Exception e) {
+            } catch (Exception ignored) {
 
             }
 
@@ -121,30 +119,30 @@ public class PathFinder {
         if(cell.isPathright()){
             try {
                 Cell temp = board[x + 1][y];
-                if (temp.isSearched() == false) {
+                if (!temp.isSearched()) {
                     directions[1] = true;
                 }
-            } catch (Exception e) {
+            } catch (Exception ignored) {
 
             }
         }
         if(cell.isPathdown()){
             try {
                 Cell temp = board[x][y + 1];
-                if (temp.isSearched() == false) {
+                if (!temp.isSearched()) {
                     directions[2] = true;
                 }
-            } catch (Exception e) {
+            } catch (Exception ignored) {
 
             }
         }
         if(cell.isPathleft()){
             try {
                 Cell temp = board[x - 1][y];
-                if (temp.isSearched() == false) {
+                if (!temp.isSearched()) {
                     directions[3] = true;
                 }
-            } catch (Exception e) {
+            } catch (Exception ignored) {
 
             }
         }

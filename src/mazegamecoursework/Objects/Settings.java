@@ -4,6 +4,8 @@ public class Settings {
     private static String email;
     private static double volume = 50;
     private static String colour = "White";
+    private static String name;
+    private static double score;
 
     public static double getVolume() {
         return volume;
@@ -27,5 +29,21 @@ public class Settings {
 
     public static void setVolume(double volume) {
         Settings.volume = volume;
+    }
+
+    public static String getName() {
+        return name;
+    }
+
+    public static void setName(String name) {
+        Settings.name = name;
+    }
+
+    public static double getScore() {
+        return score;
+    }
+
+    public static void setScore(double score) {
+        Settings.score = score;
     }
 }

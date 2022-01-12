@@ -1,8 +1,8 @@
 package mazegamecoursework.Objects;
 
 public class ScoreCalculator {
-    double time;
-    int distance;
+    private double time;
+    private int distance;
 
     public ScoreCalculator(double time, int distance){
         this.time = time;
@@ -10,8 +10,7 @@ public class ScoreCalculator {
     }
 
     public double CalculateScore(){
-        double score = (1000-time)*(Math.log(distance));
-        return score;
+        return distance/time;
         //Calculates the score by multiplying the time taken by the natural log of the distance
     }
 }

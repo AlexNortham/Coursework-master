@@ -4,14 +4,12 @@ package mazegamecoursework.Objects;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
-import javax.activation.*;
 import java.util.regex.*;
 public class EmailValidation {
-    private final String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
     private String emailTo;
-    private Random random = new Random();
-    private String from = "mazegamecoursework@gmail.com";
-    private String password = "PlayMaze123";
+    private final Random random = new Random();
+    private final String from = "mazegamecoursework@gmail.com";
+    private final String password = "PlayMaze123";
     private String code;
 
     //These are the global variables I will be using in the class
@@ -39,7 +37,7 @@ public class EmailValidation {
     //This is my constructor, getter and setter functions
 
     
-    public String getNewCode(){
+    public void getNewCode(){
         int codeNumber = random.nextInt(9998)+1;
         code = Integer.toString(codeNumber);
         if(codeNumber < 1000){
@@ -51,7 +49,6 @@ public class EmailValidation {
         if (codeNumber < 10){
             code = "0" + code;
         }
-        return code;
     } //This generates a code and formats it in the correct way
     
     public boolean sendEmail(){
@@ -91,9 +88,9 @@ public class EmailValidation {
     }
     
     public boolean validateAddress(){
+        String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(emailTo);
-        boolean valid = matcher.matches();
-        return valid;
+        return matcher.matches();
     } //This creates a pattern matcher to verify that the parametric variable "emailTo" is in the correct format
 }

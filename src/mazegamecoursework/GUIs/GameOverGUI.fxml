@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mazegamecoursework.GUIs.GameOverGUI">
+   <children>
+      <Button fx:id="showResults" layoutX="248.0" layoutY="274.0" mnemonicParsing="false" onAction="#showResultsPressed" text="Show Results" />
+      <Label layoutX="172.0" layoutY="177.0" prefHeight="46.0" prefWidth="256.0" text="You Escaped The Maze!">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

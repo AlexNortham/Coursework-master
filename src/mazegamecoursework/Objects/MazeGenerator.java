@@ -1,32 +1,41 @@
 package mazegamecoursework.Objects;
 
+import javafx.application.Platform;
+import javafx.stage.Stage;
+import mazegamecoursework.GUIs.GameOverGUI;
+import mazegamecoursework.SQLClass;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class MazeGenerator {
-    private Cell[][] board = new Cell[30][30];
-    private ArrayList<Coords> stack = new ArrayList<Coords>();
+    private final Cell[][] board = new Cell[30][30];
+    private final ArrayList<Coords> stack = new ArrayList<Coords>();
     private Coords next = new Coords(0, 0);
-    private Random random = new Random();
-    private JFrame jframe = new JFrame();
-    private JLayeredPane layeredPane = new JLayeredPane();
-    private ImageIcon blackicon = new ImageIcon("black.png");
-    private ImageIcon whiteicon = new ImageIcon("white.png");
-    private ArrayList<JLabel> grid = new ArrayList<JLabel>();
+    private final Random random = new Random();
+    private final JFrame jframe = new JFrame();
+    private final JLayeredPane layeredPane = new JLayeredPane();
+    private final ArrayList<JLabel> grid = new ArrayList<JLabel>();
     private String direction = "";
     private Coords end;
     private Coords start;
     private Player player;
-    private JLabel playerLabel = new JLabel();
+    private final JLabel playerLabel = new JLabel();
+    private final JLabel timeLabel = new JLabel();
+    private Timer timer;
+    private int distance;
+    private final MusicPlayer mp = new MusicPlayer();
+    boolean createMaze;
 
 
-    private JButton solve = new JButton();
+    private final JButton solve = new JButton();
 
 
     private void fillCells() {
@@ -49,11 +58,13 @@ public class MazeGenerator {
         start = pickStart();
         setUpActionListener();
         setUpKeyListener();
+        setUpTimer();
         fillCells();
         carveTo(0, 0);
 
         displayJLabels();
         setUpPlayer();
+        startTimer();
 
 
     }
@@ -132,10 +143,15 @@ public class MazeGenerator {
         solve.setBounds(1856, 0, 32, 32);
         solve.setSize(64, 32);
         solve.setText("Solve");
+        timeLabel.setBounds(1834, 32, 64, 32);
+        timeLabel.setText(Double.toString(timer.getTime()));
+        layeredPane.add(timeLabel);
         layeredPane.add(solve, new Integer(0));
-        layeredPane.add(playerLabel, new Integer(1));
+        layeredPane.add(playerLabel, new Integer(2));
         layeredPane.repaint();
         jframe.repaint();
+        mp.playSong();
+
     }
 
     public void setUpPlayer(){
@@ -156,19 +172,39 @@ public class MazeGenerator {
     }
 
     private void pathReplacement(ArrayList<Coords> stack) {
-        for (Coords coords : stack) {
-            board[coords.getX()][coords.getY()].setOrange(true);
+        String path = System.getProperty("user.dir");
+        for (int j = 0; j < stack.size(); j++) {
+
+                Coords c = stack.get(j);
+
+                Cell temp = board[c.getX()][c.getY()];
+                String directions = "";
+                if (temp.isPathup()) {
+                    directions = directions + "up";
+                }
+                if (temp.isPathright()) {
+                    directions = directions + "right";
+                }
+                if (temp.isPathdown()) {
+                    directions = directions + "down";
+                }
+                if (temp.isPathleft()) {
+                    directions = directions + "left";
+                }
+                if (directions.equals("")) {
+                    directions = "none";
+                }
+                ImageIcon icon = new ImageIcon(path + "\\mazeImages\\" + "orange" + directions + ".png");
+                JLabel label = new JLabel(icon);
+                label.setIcon(icon);
+                int x = (c.getX() + 1) * 32;
+                int y = (c.getY() + 2) * 32;
+                label.setBounds(x, y, 32, 32);
+                layeredPane.add(label, new Integer(1));
 
         }
 
-        //layeredPane.removeAll();
-        Component[] components = layeredPane.getComponents();
-        for (Component component: components){
-            layeredPane.remove(component);
-        }
-        layeredPane.revalidate();
-        layeredPane.repaint();
-        displayJLabels();
+
     }
 
 
@@ -218,26 +254,26 @@ public class MazeGenerator {
         }
         try {
             Cell temp = board[x + 1][y];
-            if (temp.isVisited() == false) {
+            if (!temp.isVisited()) {
                 neighbours[1] = true;
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
         try {
             Cell temp = board[x][y + 1];
-            if (temp.isVisited() == false) {
+            if (!temp.isVisited()) {
                 neighbours[2] = true;
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
         try {
             Cell temp = board[x - 1][y];
-            if (temp.isVisited() == false) {
+            if (!temp.isVisited()) {
                 neighbours[3] = true;
             }
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
 
@@ -247,9 +283,12 @@ public class MazeGenerator {
     private void carveTo(int x, int y) {
         boolean repeat = true; //This boolean determines whether the loop will activate
         boolean progress; //This boolean determines whether the maze should continue carving a path on the current iteration
-        while (repeat == true) {
+        while (repeat) {
             progress = true;
-            if (board[x][y].isVisited() == true) { //This checks if the current cell has been visited
+            if((new Coords(x,y).equals(end))){
+                distance = stack.size();
+            }
+            if (board[x][y].isVisited()) { //This checks if the current cell has been visited
                 int temp = stack.size();
                 stack.remove(temp - 1);
                 temp--;
@@ -284,16 +323,16 @@ public class MazeGenerator {
                 boolean[] neighbours = getNeighbours(x, y); //This gets the unvisited neighbours of the current cell
 
                 ArrayList<String> directions = new ArrayList<String>();
-                if (neighbours[0] == true) {
+                if (neighbours[0]) {
                     directions.add("up");
                 }
-                if (neighbours[1] == true) {
+                if (neighbours[1]) {
                     directions.add("right");
                 }
-                if (neighbours[2] == true) {
+                if (neighbours[2]) {
                     directions.add("down");
                 }
-                if (neighbours[3] == true) {
+                if (neighbours[3]) {
                     directions.add("left");
                 }
                 //These if statements create an ArrayList containing the String names of all the potential directions the maze coukd choose to take from the current cell
@@ -309,28 +348,28 @@ public class MazeGenerator {
 
                 try {
                     if (direction.equals("up")) {
-                        if (board[x][y - 1].isVisited() == false) {
+                        if (!board[x][y - 1].isVisited()) {
                             clearWall("up", x, y);
                             clearWall("down", x, y - 1);
                             y--;
                         }
                     }
                     if (direction.equals("right")) {
-                        if (board[x + 1][y].isVisited() == false) {
+                        if (!board[x + 1][y].isVisited()) {
                             clearWall("right", x, y);
                             clearWall("left", x + 1, y);
                             x++;
                         }
                     }
                     if (direction.equals("down")) {
-                        if (board[x][y + 1].isVisited() == false) {
+                        if (!board[x][y + 1].isVisited()) {
                             clearWall("down", x, y);
                             clearWall("up", x, y + 1);
                             y++;
                         }
                     }
                     if (direction.equals("left")) {
-                        if (board[x - 1][y].isVisited() == false) {
+                        if (!board[x - 1][y].isVisited()) {
                             clearWall("left", x, y);
                             clearWall("right", x - 1, y);
                             x--;
@@ -353,6 +392,7 @@ public class MazeGenerator {
             public void actionPerformed(ActionEvent actionEvent) {
                 PathFinder pathFinder = new PathFinder(board, start, end);
                 ArrayList<Coords> stack = pathFinder.findPath();
+                distance = stack.size();
                 pathReplacement(stack);
             }
         });
@@ -375,24 +415,84 @@ public class MazeGenerator {
                     if(isLegal("up")) {
                         player.setY(player.getY() - 32);
                         playerLabel.setBounds(player.getX(), player.getY(), 16, 16);
+                        jframe.repaint();
+                        int x = ((player.getX()-8)/32)-1;
+                        int y = ((player.getY()-8)/32)-2;
+                        System.out.print(x);
+                        System.out.print(y);
+                        System.out.println();
+                        System.out.println(end.toString());
+                        Coords current = new Coords(x,y);
+                        if(current.equals(end)){
+                            try {
+                                finishGame();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
                 }
                 if (key == keyEvent.VK_RIGHT){
                     if(isLegal("right")) {
                         player.setX(player.getX() + 32);
                         playerLabel.setBounds(player.getX(), player.getY(), 16, 16);
+                        jframe.repaint();
+                        int x = ((player.getX()-8)/32)-1;
+                        int y = ((player.getY()-8)/32)-2;
+                        System.out.print(x);
+                        System.out.print(y);
+                        System.out.println();
+                        System.out.println(end.toString());
+                        Coords current = new Coords(x,y);
+                        if(current.equals(end)){
+                            try {
+                                finishGame();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
                 }
                 if(key == keyEvent.VK_DOWN){
                     if(isLegal("down")) {
                         player.setY(player.getY() + 32);
                         playerLabel.setBounds(player.getX(), player.getY(), 16, 16);
+                        jframe.repaint();
+                        int x = ((player.getX()-8)/32)-1;
+                        int y = ((player.getY()-8)/32)-2;
+                        System.out.print(x);
+                        System.out.print(y);
+                        System.out.println();
+                        System.out.println(end.toString());
+                        Coords current = new Coords(x,y);
+                        if(current.equals(end)){
+                            try {
+                                finishGame();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
                 }
                 if(key == keyEvent.VK_LEFT){
                     if(isLegal("left")) {
                         player.setX(player.getX() - 32);
                         playerLabel.setBounds(player.getX(), player.getY(), 16, 16);
+                        jframe.repaint();
+                        int x = ((player.getX()-8)/32)-1;
+                        int y = ((player.getY()-8)/32)-2;
+                        System.out.print(x);
+                        System.out.print(y);
+                        System.out.println();
+                        System.out.println(end.toString());
+                        Coords current = new Coords(x,y);
+                        if(current.equals(end)){
+                            try {
+                                finishGame();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
                 }
 
@@ -436,6 +536,56 @@ public class MazeGenerator {
         return false;
 
     }
+
+    private void finishGame() throws Exception {
+
+        for(KeyListener k : jframe.getKeyListeners()){
+            jframe.removeKeyListener(k);
+        }
+        for(KeyListener k : layeredPane.getKeyListeners()){
+            layeredPane.removeKeyListener(k);
+        }
+        timer.setRunnable(false);
+        double finalTime  = timer.getTime();
+        ScoreCalculator sc = new ScoreCalculator(finalTime, distance);
+        double score = sc.CalculateScore();
+        score = Math.round(score*10000)/100;
+        Settings.setScore(score);
+        String email = Settings.getEmail();
+        String name = Settings.getName();
+        String command = "INSERT INTO Scores (Score, EmailAddress, UserName) VALUES (" + score + ", '" + email+ "', '"+name+"')";
+        SQLClass.insert(SQLClass.getConnection(), command);
+
+        Thread.sleep(1000);
+        Platform.runLater(() -> {
+            GameOverGUI gameOverGUI = new GameOverGUI();
+            Stage stage = new Stage();
+            try {
+                gameOverGUI.start(stage);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        jframe.dispose();
+
+
+
+
+
+
+
+
+    }
+
+    private void setUpTimer(){
+        timer = new Timer(timeLabel);
+    }
+
+    private void startTimer(){
+        timer.setRunnable(true);
+        timer.start();
+    }
+
 
 
 }

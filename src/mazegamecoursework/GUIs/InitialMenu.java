@@ -6,11 +6,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class InitialMenu extends Application {
     public Button AccountButton;
     public Button LoginButton;
+    public Button quit;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -20,7 +26,9 @@ public class InitialMenu extends Application {
 
         primaryStage.setScene(scene);
 
+
         primaryStage.show();
+
     }
 
     public void CreateAccountPressed(ActionEvent actionEvent) {
@@ -51,5 +59,9 @@ public class InitialMenu extends Application {
         }
         Stage stage = (Stage) AccountButton.getScene().getWindow();
         stage.close();
+    }
+
+    public void QuitPressed(ActionEvent actionEvent) {
+        System.exit(0);
     }
 }

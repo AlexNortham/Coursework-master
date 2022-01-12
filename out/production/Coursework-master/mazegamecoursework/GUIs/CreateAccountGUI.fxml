@@ -3,19 +3,19 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mazegamecoursework.GUIs.CreateAccountGUI">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mazegamecoursework.GUIs.CreateAccountGUI">
    <children>
-      <TextField fx:id="EnterEmail" layoutX="44.0" layoutY="54.0" />
-      <TextField fx:id="EnterPassword" layoutX="44.0" layoutY="122.0" />
-      <TextField fx:id="EnterUsername" layoutX="44.0" layoutY="200.0" />
-      <TextField fx:id="CodeArea" layoutX="44.0" layoutY="319.0" visible="false" />
-      <Label fx:id="EmailLabel" layoutX="206.0" layoutY="58.0" text="Email Address" textFill="#00000080" />
-      <Label fx:id="PasswordLabel" layoutX="206.0" layoutY="126.0" text="Password" textFill="#00000081" />
-      <Label fx:id="UsernameLabel" layoutX="206.0" layoutY="204.0" text="Username" textFill="#00000080" />
-      <Label fx:id="CodeLabel" layoutX="206.0" layoutY="323.0" text="Enter code here" textFill="#00000080" visible="false" />
-      <Button fx:id="SendVerCode" layoutX="403.0" layoutY="122.0" mnemonicParsing="false" onAction="#SendVerCodePressed" text="Send Verification Email" />
-      <Button fx:id="Confirm" layoutX="446.0" layoutY="319.0" mnemonicParsing="false" onAction="#ConfirmPressed" text="Confirm" visible="false" />
-      <Label fx:id="ErrorLabel" layoutX="44.0" layoutY="243.0" prefHeight="63.0" prefWidth="149.0" visible="false"/>
-      <Button fx:id="Back" layoutX="559.0" layoutY="14.0" mnemonicParsing="false" onAction="#BackPressed" text="⮌" />
+      <TextField fx:id="EnterEmail" layoutX="66.0" layoutY="73.0" prefWidth="149.0" />
+      <TextField fx:id="EnterPassword" layoutX="66.0" layoutY="141.0" />
+      <TextField fx:id="EnterUsername" layoutX="66.0" layoutY="219.0" />
+      <TextField fx:id="CodeArea" layoutX="66.0" layoutY="304.0" visible="false" />
+      <Label fx:id="EmailLabel" layoutX="228.0" layoutY="77.0" text="Email Address" textFill="#00000080" />
+      <Label fx:id="PasswordLabel" layoutX="228.0" layoutY="145.0" text="Password" textFill="#00000081" />
+      <Label fx:id="UsernameLabel" layoutX="228.0" layoutY="223.0" text="Username" textFill="#00000080" />
+      <Label fx:id="CodeLabel" layoutX="224.0" layoutY="308.0" text="Enter code here" textFill="#00000080" visible="false" />
+      <Button fx:id="SendVerCode" layoutX="424.0" layoutY="140.0" mnemonicParsing="false" onAction="#SendVerCodePressed" text="Send Verification Email" />
+      <Button fx:id="Confirm" layoutX="424.0" layoutY="341.0" mnemonicParsing="false" onAction="#ConfirmPressed" text="Confirm" visible="false" />
+      <Label fx:id="ErrorLabel" layoutX="66.0" layoutY="262.0" prefHeight="63.0" prefWidth="149.0" visible="false" />
+      <Button fx:id="Back" layoutX="562.0" layoutY="14.0" mnemonicParsing="false" onAction="#BackPressed" text="⮌" />
    </children>
 </AnchorPane>

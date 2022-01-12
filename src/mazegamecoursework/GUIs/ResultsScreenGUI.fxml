@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mazegamecoursework.GUIs.ResultsScreenGUI">
+   <children>
+      <Button fx:id="signOut" layoutX="523.0" layoutY="14.0" mnemonicParsing="false" onAction="#signOutPressed" text="Sign Out" />
+      <Label fx:id="resultsArea" layoutX="38.0" layoutY="39.0" prefHeight="306.0" prefWidth="178.0" />
+      <Button fx:id="showResultsButton" layoutX="216.0" layoutY="14.0" mnemonicParsing="false" onAction="#showResultsPressed" text="Show Results" />
+      <Label fx:id="scoreLabel" layoutX="300.0" layoutY="81.0" prefHeight="47.0" prefWidth="282.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Button fx:id="playAgain" layoutX="510.0" layoutY="345.0" mnemonicParsing="false" onAction="#playAgainPressed" text="Play Again" />
+   </children>
+</AnchorPane>

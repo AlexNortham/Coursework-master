@@ -4,7 +4,7 @@ public class MergeSort {
 
 
 
-    private int[] sort(int[] list) { //This method will split the list passed to it in 2
+    public double[] sort(double[] list) { //This method will split the list passed to it in 2
         int length = list.length;
         if (length <= 1) {
             return list;
@@ -12,20 +12,16 @@ public class MergeSort {
 
         }
         int middle = length / 2;
-        int[] left = new int[middle];
-        int[] right = new int[length - middle];
+        double[] left = new double[middle];
+        double[] right = new double[length - middle];
         //This creates 2 sub-lists that combined have the same length as the original list
 
-        for (int x = 0; x <  left.length; x++) {
-            left[x] = list[x];
-        }
+        System.arraycopy(list, 0, left, 0, left.length);
 
-        for (int y = 0; y < right.length; y++) {
-            right[y] = list[middle + y];
-        }
-        //These for loops add the contents of the old list into the 2 new lists
+        System.arraycopy(list, middle + 0, right, 0, right.length);
+        //These add the contents of the old list into the 2 new lists
 
-        int[] sorted = new int[length];
+        double[] sorted = new double[length];
         left = sort(left);
         right = sort(right);
         //This calls the sort function on the 2 sub-lists
@@ -37,10 +33,10 @@ public class MergeSort {
         //This returns the sorted list
     }
 
-    private int[] merge(int[] left, int[] right) { //This method merges the 2 parametric lists into one list sorted from largest to smallest
+    private double[] merge(double[] left, double[] right) { //This method merges the 2 parametric lists into one list sorted from largest to smallest
         int leftLength = left.length;
         int rightLength = right.length;
-        int[] merged = new int[leftLength + rightLength];
+        double[] merged = new double[leftLength + rightLength];
         //This creates a new list with a magnitude of that of both parametric lists combined
 
         int leftIndex = 0;

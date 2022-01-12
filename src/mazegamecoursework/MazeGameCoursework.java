@@ -6,11 +6,9 @@
 package mazegamecoursework;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.application.Platform;
 import javafx.stage.Stage;
-import mazegamecoursework.GUIs.InitialMenu;
+import mazegamecoursework.GUIs.keepsJavaFXOpen;
 
 
 public class MazeGameCoursework extends Application {
@@ -18,19 +16,23 @@ public class MazeGameCoursework extends Application {
     //String dir = getClass().getResource("GUIs\\InitialMenu.fxml");
     
     public static void main(String[] args) {
-       launch(args);
 
+
+        Platform.runLater(() -> {
+            keepsJavaFXOpen keepsJavaFXOpen = new keepsJavaFXOpen();
+            Stage stage = new Stage();
+            try {
+                keepsJavaFXOpen.start(stage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
         
     }
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        Parent root = FXMLLoader.load(getClass().getResource("GUIs\\InitialMenu.fxml"));
-
-        Scene scene = new Scene(root);
-
-        primaryStage.setScene(scene);
-        primaryStage.show();
     }
 }

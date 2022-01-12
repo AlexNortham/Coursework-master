@@ -1,6 +1,7 @@
 package mazegamecoursework.GUIs;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -40,6 +41,7 @@ public class GameStartGUI extends Application {
             primaryStage.setScene(scene);
 
             primaryStage.show();
+            Platform.setImplicitExit(false);
         }catch (Exception e) {
 
             e.printStackTrace();
@@ -65,7 +67,7 @@ public class GameStartGUI extends Application {
             e.printStackTrace();
         }
         Stage stage = (Stage) options.getScene().getWindow();
-        stage.close();
+
     }
 
     public void SignOutDone(ActionEvent actionEvent) {
@@ -80,7 +82,7 @@ public class GameStartGUI extends Application {
             e.printStackTrace();
         }
         Stage stage = (Stage) playgame.getScene().getWindow();
-        stage.close();
+        stage.hide();
     }
 
 
