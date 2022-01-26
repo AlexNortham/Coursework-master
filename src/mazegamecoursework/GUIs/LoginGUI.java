@@ -7,10 +7,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import mazegamecoursework.Objects.PasswordHasher;
-import mazegamecoursework.SQLClass;
+import mazegamecoursework.Objects.SQLClass;
 import mazegamecoursework.Objects.Settings;
 
 import java.io.IOException;
@@ -19,12 +20,13 @@ import java.sql.ResultSet;
 
 public class LoginGUI extends Application {
     public TextField EnterEmail;
-    public TextField EnterPassword;
+
     public Label EmailLabel;
     public Label PasswordLabel;
     public Label Error;
     public Button LoginButton;
     public Button Back;
+    public PasswordField EnterPassword;
 
 
     @Override
@@ -71,11 +73,17 @@ public class LoginGUI extends Application {
 
                 }
             }
+            rs.close();
+            con.close();
+
         } catch (Exception e) {
 
             e.printStackTrace();
         }
+
         Error.setVisible(true);
+        EnterEmail.setText("");
+        EnterPassword.setText("");
     }
 
     public void BackPressed(ActionEvent actionEvent) throws IOException {

@@ -5,8 +5,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 
 public class VolumePicker extends Thread implements Runnable{
-    private Slider volumeSlider;
-    private Label volumeLabel;
+    private final Slider volumeSlider;
+    private final Label volumeLabel;
     protected boolean runnable = false;
 
     public VolumePicker(Slider volumeSlider, Label volumeLabel){

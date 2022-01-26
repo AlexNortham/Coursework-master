@@ -37,11 +37,7 @@ public class Coords {
     public boolean equals(Coords coords) {
         int x = coords.getX();
         int y = coords.getY();
-        if(this.x == x && this.y == y){
-            return true;
-        }else{
-            return false;
-        }
+        return this.x == x && this.y == y;
 
     }
 

@@ -3,7 +3,7 @@ package mazegamecoursework.Objects;
 public class Settings {
     private static String email;
     private static double volume = 50;
-    private static String colour = "White";
+    private static String colour = "white";
     private static String name;
     private static double score;
 
@@ -16,7 +16,7 @@ public class Settings {
     }
 
     public static void setColour(String colour) {
-        Settings.colour = colour;
+        Settings.colour = colour.toLowerCase();
     }
 
     public static String getEmail() {

@@ -3,9 +3,9 @@ package mazegamecoursework.Objects;
 import java.util.*;
 
 public class PathFinder {
-    private Cell[][] board;
-    private Coords start;
-    private Coords end;
+    private final Cell[][] board;
+    private final Coords start;
+    private final Coords end;
 
     public PathFinder(Cell[][] board, Coords start, Coords end){
         this.board = board;

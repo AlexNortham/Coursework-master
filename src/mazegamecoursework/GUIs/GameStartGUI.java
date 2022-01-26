@@ -13,6 +13,9 @@ import javafx.stage.Stage;
 import mazegamecoursework.Objects.MazeGenerator;
 import mazegamecoursework.Objects.Settings;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -48,7 +51,7 @@ public class GameStartGUI extends Application {
         }
     }
 
-    public void PlayGameDone(ActionEvent actionEvent) {
+    public void PlayGameDone(ActionEvent actionEvent) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         MazeGenerator mz = new MazeGenerator();
         mz.setUpBoard();
         Stage stage = (Stage) playgame.getScene().getWindow();

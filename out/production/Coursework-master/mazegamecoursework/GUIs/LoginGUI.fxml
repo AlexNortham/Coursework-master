@@ -3,15 +3,15 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mazegamecoursework.GUIs.LoginGUI">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mazegamecoursework.GUIs.LoginGUI">
    <children>
       <TextField fx:id="EnterEmail" layoutX="60.0" layoutY="95.0" prefHeight="25.0" prefWidth="237.0" />
-      <TextField fx:id="EnterPassword" layoutX="60.0" layoutY="200.0" prefHeight="25.0" prefWidth="237.0" />
       <Label fx:id="EmailLabel" layoutX="60.0" layoutY="137.0" text="Enter Email Address" textFill="#00000081" />
       <Label fx:id="PasswordLabel" layoutX="60.0" layoutY="248.0" prefHeight="17.0" prefWidth="127.0" text="Enter Password" textFill="#00000080" />
       <Label fx:id="Error" layoutX="355.0" layoutY="99.0" text="Incorrect username or password" textFill="#00000080" visible="false" />
       <Button fx:id="LoginButton" layoutX="355.0" layoutY="154.0" mnemonicParsing="false" onAction="#LoginPressed" prefHeight="25.0" prefWidth="170.0" text="Login" />
       <Button fx:id="Back" layoutX="559.0" layoutY="14.0" mnemonicParsing="false" onAction="#BackPressed" text="⮌" />
+      <PasswordField fx:id="EnterPassword" layoutX="60.0" layoutY="212.0" prefHeight="25.0" prefWidth="237.0" />
 
    </children>
 </AnchorPane>

@@ -33,7 +33,7 @@ public class OptionsGUI extends Application implements Initializable {
     @FXML
     private Button Back;
     private VolumePicker volumePicker;
-    private ObservableList<String> combolist = FXCollections.observableArrayList("White", "Red", "Blue", "Yellow", "Green");
+    private final ObservableList<String> combolist = FXCollections.observableArrayList("White", "Red", "Blue", "Yellow", "Green");
 
 
     @Override
@@ -61,7 +61,7 @@ public class OptionsGUI extends Application implements Initializable {
 
 
     public void ColourPicked(ActionEvent actionEvent) {
-        Settings.setColour((String) colourpicker.getValue());
+        Settings.setColour(colourpicker.getValue());
     }
 
     public void BackPressed(ActionEvent actionEvent) throws Exception {
@@ -88,7 +88,7 @@ public class OptionsGUI extends Application implements Initializable {
         volumeslider.valueProperty().addListener((observable, oldValue, newValue) -> {
             double volume  = newValue.doubleValue();
             volume  = Math.round(volume);
-            volumelabel.setText("Music Volume : " + Integer.toString((int) volume));
+            volumelabel.setText("Music Volume : " + (int) volume);
             Settings.setVolume(volume);
         });
     }

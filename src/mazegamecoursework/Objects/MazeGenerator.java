@@ -3,12 +3,11 @@ package mazegamecoursework.Objects;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import mazegamecoursework.GUIs.GameOverGUI;
-import mazegamecoursework.SQLClass;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
@@ -18,7 +17,6 @@ import java.util.Random;
 public class MazeGenerator {
     private final Cell[][] board = new Cell[30][30];
     private final ArrayList<Coords> stack = new ArrayList<Coords>();
-    private Coords next = new Coords(0, 0);
     private final Random random = new Random();
     private final JFrame jframe = new JFrame();
     private final JLayeredPane layeredPane = new JLayeredPane();
@@ -32,10 +30,7 @@ public class MazeGenerator {
     private Timer timer;
     private int distance;
     private final MusicPlayer mp = new MusicPlayer();
-    boolean createMaze;
-
-
-    private final JButton solve = new JButton();
+    boolean fullScore = true;
 
 
     private void fillCells() {
@@ -53,10 +48,10 @@ public class MazeGenerator {
         }
     }
 
-    public void setUpBoard() {
+    public void setUpBoard() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         end = pickEnd();
         start = pickStart();
-        setUpActionListener();
+
         setUpKeyListener();
         setUpTimer();
         fillCells();
@@ -83,7 +78,7 @@ public class MazeGenerator {
         return new Coords(x, y);
     }
 
-    public void displayJLabels() {
+    public void displayJLabels() throws UnsupportedAudioFileException, LineUnavailableException, IOException {
         layeredPane.setSize(1920, 1080);
         layeredPane.setVisible(true);
 
@@ -92,9 +87,7 @@ public class MazeGenerator {
         String path = System.getProperty("user.dir");
         try {
             jframe.setUndecorated(true);
-        } catch (Exception e) {
-
-        }
+        } catch (Exception ignored) {}
         jframe.setSize(1920, 1080);
         jframe.setVisible(true);
         jframe.getContentPane().setBackground(Color.BLACK);
@@ -138,27 +131,25 @@ public class MazeGenerator {
                 System.out.print(directions + " ");
 
             }
-            System.out.println("");
+            System.out.println();
         }
-        solve.setBounds(1856, 0, 32, 32);
-        solve.setSize(64, 32);
-        solve.setText("Solve");
+
         timeLabel.setBounds(1834, 32, 64, 32);
         timeLabel.setText(Double.toString(timer.getTime()));
         layeredPane.add(timeLabel);
-        layeredPane.add(solve, new Integer(0));
+
         layeredPane.add(playerLabel, new Integer(2));
         layeredPane.repaint();
         jframe.repaint();
-        mp.playSong();
+        Platform.runLater(mp::playSong);
 
     }
 
-    public void setUpPlayer(){
-        int x = ((start.getX()+1)*32)+8;
-        int y = ((start.getY()+2)*32)+8;
+    public void setUpPlayer() {
+        int x = ((start.getX() + 1) * 32) + 8;
+        int y = ((start.getY() + 2) * 32) + 8;
         String path = System.getProperty("user.dir");
-        ImageIcon icon = new ImageIcon(path + "\\mazeImages\\player.png");
+        ImageIcon icon = new ImageIcon(path + "\\mazeImages\\player" + Settings.getColour() + ".png");
         player = new Player();
         player.setIcon(icon);
         player.setX(x);
@@ -168,39 +159,38 @@ public class MazeGenerator {
         playerLabel.setBounds(player.getX(), player.getY(), 16, 16);
 
 
-
     }
 
     private void pathReplacement(ArrayList<Coords> stack) {
         String path = System.getProperty("user.dir");
-        for (int j = 0; j < stack.size(); j++) {
+        for (int j = 1; j < stack.size(); j++) {
 
-                Coords c = stack.get(j);
+            Coords c = stack.get(j);
 
-                Cell temp = board[c.getX()][c.getY()];
-                String directions = "";
-                if (temp.isPathup()) {
-                    directions = directions + "up";
-                }
-                if (temp.isPathright()) {
-                    directions = directions + "right";
-                }
-                if (temp.isPathdown()) {
-                    directions = directions + "down";
-                }
-                if (temp.isPathleft()) {
-                    directions = directions + "left";
-                }
-                if (directions.equals("")) {
-                    directions = "none";
-                }
-                ImageIcon icon = new ImageIcon(path + "\\mazeImages\\" + "orange" + directions + ".png");
-                JLabel label = new JLabel(icon);
-                label.setIcon(icon);
-                int x = (c.getX() + 1) * 32;
-                int y = (c.getY() + 2) * 32;
-                label.setBounds(x, y, 32, 32);
-                layeredPane.add(label, new Integer(1));
+            Cell temp = board[c.getX()][c.getY()];
+            String directions = "";
+            if (temp.isPathup()) {
+                directions = directions + "up";
+            }
+            if (temp.isPathright()) {
+                directions = directions + "right";
+            }
+            if (temp.isPathdown()) {
+                directions = directions + "down";
+            }
+            if (temp.isPathleft()) {
+                directions = directions + "left";
+            }
+            if (directions.equals("")) {
+                directions = "none";
+            }
+            ImageIcon icon = new ImageIcon(path + "\\mazeImages\\" + "orange" + directions + ".png");
+            JLabel label = new JLabel(icon);
+            label.setIcon(icon);
+            int x = (c.getX() + 1) * 32;
+            int y = (c.getY() + 2) * 32;
+            label.setBounds(x, y, 32, 32);
+            layeredPane.add(label, new Integer(1));
 
         }
 
@@ -246,11 +236,10 @@ public class MazeGenerator {
         boolean[] neighbours = new boolean[]{false, false, false, false};
         try {
             Cell temp = board[x][y - 1];
-            if (temp.isVisited() == false) {
+            if (!temp.isVisited()) {
                 neighbours[0] = true;
             }
-        } catch (Exception e) {
-
+        } catch (Exception ignored) {
         }
         try {
             Cell temp = board[x + 1][y];
@@ -285,22 +274,22 @@ public class MazeGenerator {
         boolean progress; //This boolean determines whether the maze should continue carving a path on the current iteration
         while (repeat) {
             progress = true;
-            if((new Coords(x,y).equals(end))){
+            if ((new Coords(x, y).equals(end))) {
                 distance = stack.size();
             }
             if (board[x][y].isVisited()) { //This checks if the current cell has been visited
                 int temp = stack.size();
                 stack.remove(temp - 1);
                 temp--;
-                next = stack.get(temp - 1);
+                Coords next = stack.get(temp - 1);
                 //This removes the current cell from the stack and backtracks once
 
                 if (stack.size() > 0) {
                     if (!(next.getX() == 0 && next.getY() == 0)) { //This checks whether the current cell is [0,0]
                         stack.remove(temp - 1);
                         board[next.getX()][next.getY()].setVisited(false);
-                        System.out.print(Integer.toString(next.getX()) + " ");
-                        System.out.println(Integer.toString(next.getY()));
+                        System.out.print(next.getX() + " ");
+                        System.out.println(next.getY());
                         progress = false;
                         x = next.getX();
                         y = next.getY();
@@ -386,19 +375,8 @@ public class MazeGenerator {
         }
     }
 
-    private void setUpActionListener() {
-        solve.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                PathFinder pathFinder = new PathFinder(board, start, end);
-                ArrayList<Coords> stack = pathFinder.findPath();
-                distance = stack.size();
-                pathReplacement(stack);
-            }
-        });
-    }
 
-    private void setUpKeyListener(){
+    private void setUpKeyListener() {
         KeyListener keyListener = new KeyListener() {
             @Override
             public void keyTyped(KeyEvent keyEvent) {
@@ -408,22 +386,19 @@ public class MazeGenerator {
             @Override
             public void keyPressed(KeyEvent keyEvent) {
                 int key = keyEvent.getKeyCode();
-                if(key == KeyEvent.VK_R){
-
-                }
-                if (key == keyEvent.VK_UP){
-                    if(isLegal("up")) {
+                if (key == KeyEvent.VK_UP) {
+                    if (isLegal("up")) {
                         player.setY(player.getY() - 32);
                         playerLabel.setBounds(player.getX(), player.getY(), 16, 16);
                         jframe.repaint();
-                        int x = ((player.getX()-8)/32)-1;
-                        int y = ((player.getY()-8)/32)-2;
+                        int x = ((player.getX() - 8) / 32) - 1;
+                        int y = ((player.getY() - 8) / 32) - 2;
                         System.out.print(x);
                         System.out.print(y);
                         System.out.println();
                         System.out.println(end.toString());
-                        Coords current = new Coords(x,y);
-                        if(current.equals(end)){
+                        Coords current = new Coords(x, y);
+                        if (current.equals(end)) {
                             try {
                                 finishGame();
                             } catch (Exception e) {
@@ -432,19 +407,19 @@ public class MazeGenerator {
                         }
                     }
                 }
-                if (key == keyEvent.VK_RIGHT){
-                    if(isLegal("right")) {
+                if (key == KeyEvent.VK_RIGHT) {
+                    if (isLegal("right")) {
                         player.setX(player.getX() + 32);
                         playerLabel.setBounds(player.getX(), player.getY(), 16, 16);
                         jframe.repaint();
-                        int x = ((player.getX()-8)/32)-1;
-                        int y = ((player.getY()-8)/32)-2;
+                        int x = ((player.getX() - 8) / 32) - 1;
+                        int y = ((player.getY() - 8) / 32) - 2;
                         System.out.print(x);
                         System.out.print(y);
                         System.out.println();
                         System.out.println(end.toString());
-                        Coords current = new Coords(x,y);
-                        if(current.equals(end)){
+                        Coords current = new Coords(x, y);
+                        if (current.equals(end)) {
                             try {
                                 finishGame();
                             } catch (Exception e) {
@@ -453,19 +428,19 @@ public class MazeGenerator {
                         }
                     }
                 }
-                if(key == keyEvent.VK_DOWN){
-                    if(isLegal("down")) {
+                if (key == KeyEvent.VK_DOWN) {
+                    if (isLegal("down")) {
                         player.setY(player.getY() + 32);
                         playerLabel.setBounds(player.getX(), player.getY(), 16, 16);
                         jframe.repaint();
-                        int x = ((player.getX()-8)/32)-1;
-                        int y = ((player.getY()-8)/32)-2;
+                        int x = ((player.getX() - 8) / 32) - 1;
+                        int y = ((player.getY() - 8) / 32) - 2;
                         System.out.print(x);
                         System.out.print(y);
                         System.out.println();
                         System.out.println(end.toString());
-                        Coords current = new Coords(x,y);
-                        if(current.equals(end)){
+                        Coords current = new Coords(x, y);
+                        if (current.equals(end)) {
                             try {
                                 finishGame();
                             } catch (Exception e) {
@@ -474,19 +449,19 @@ public class MazeGenerator {
                         }
                     }
                 }
-                if(key == keyEvent.VK_LEFT){
-                    if(isLegal("left")) {
+                if (key == KeyEvent.VK_LEFT) {
+                    if (isLegal("left")) {
                         player.setX(player.getX() - 32);
                         playerLabel.setBounds(player.getX(), player.getY(), 16, 16);
                         jframe.repaint();
-                        int x = ((player.getX()-8)/32)-1;
-                        int y = ((player.getY()-8)/32)-2;
+                        int x = ((player.getX() - 8) / 32) - 1;
+                        int y = ((player.getY() - 8) / 32) - 2;
                         System.out.print(x);
                         System.out.print(y);
                         System.out.println();
                         System.out.println(end.toString());
-                        Coords current = new Coords(x,y);
-                        if(current.equals(end)){
+                        Coords current = new Coords(x, y);
+                        if (current.equals(end)) {
                             try {
                                 finishGame();
                             } catch (Exception e) {
@@ -494,6 +469,13 @@ public class MazeGenerator {
                             }
                         }
                     }
+                }
+                if (key == KeyEvent.VK_H) {
+                    PathFinder pathFinder = new PathFinder(board, start, end);
+                    ArrayList<Coords> stack = pathFinder.findPath();
+                    distance = stack.size();
+                    pathReplacement(stack);
+                    fullScore = false;
                 }
 
             }
@@ -507,28 +489,28 @@ public class MazeGenerator {
         layeredPane.addKeyListener(keyListener);
     }
 
-    private boolean isLegal(String direction){
-        int x = (((player.getX()-8)/32)-1);
-        int y = (((player.getY()-8)/32)-2);
+    private boolean isLegal(String direction) {
+        int x = (((player.getX() - 8) / 32) - 1);
+        int y = (((player.getY() - 8) / 32) - 2);
         Cell temp = board[x][y];
-        switch (direction){
+        switch (direction) {
             case ("up"):
-                if(temp.isPathup()){
+                if (temp.isPathup()) {
                     return true;
                 }
                 break;
             case ("right"):
-                if(temp.isPathright()){
+                if (temp.isPathright()) {
                     return true;
                 }
                 break;
             case ("down"):
-                if(temp.isPathdown()){
+                if (temp.isPathdown()) {
                     return true;
                 }
                 break;
             case ("left"):
-                if (temp.isPathleft()){
+                if (temp.isPathleft()) {
                     return true;
                 }
                 break;
@@ -539,25 +521,29 @@ public class MazeGenerator {
 
     private void finishGame() throws Exception {
 
-        for(KeyListener k : jframe.getKeyListeners()){
+        for (KeyListener k : jframe.getKeyListeners()) {
             jframe.removeKeyListener(k);
         }
-        for(KeyListener k : layeredPane.getKeyListeners()){
+        for (KeyListener k : layeredPane.getKeyListeners()) {
             layeredPane.removeKeyListener(k);
         }
         timer.setRunnable(false);
-        double finalTime  = timer.getTime();
+        double finalTime = timer.getTime();
         ScoreCalculator sc = new ScoreCalculator(finalTime, distance);
         double score = sc.CalculateScore();
-        score = Math.round(score*10000)/100;
+        score = Math.round(score * 10000) / 100;
+        if (!fullScore) {
+            score = score / 10;
+        }
         Settings.setScore(score);
         String email = Settings.getEmail();
         String name = Settings.getName();
-        String command = "INSERT INTO Scores (Score, EmailAddress, UserName) VALUES (" + score + ", '" + email+ "', '"+name+"')";
+        String command = "INSERT INTO Scores (Score, EmailAddress, UserName) VALUES (" + score + ", '" + email + "', '" + name + "')";
         SQLClass.insert(SQLClass.getConnection(), command);
 
         Thread.sleep(1000);
         Platform.runLater(() -> {
+            mp.stopSong();
             GameOverGUI gameOverGUI = new GameOverGUI();
             Stage stage = new Stage();
             try {
@@ -569,23 +555,16 @@ public class MazeGenerator {
         jframe.dispose();
 
 
-
-
-
-
-
-
     }
 
-    private void setUpTimer(){
+    private void setUpTimer() {
         timer = new Timer(timeLabel);
     }
 
-    private void startTimer(){
+    private void startTimer() {
         timer.setRunnable(true);
         timer.start();
     }
-
 
 
 }

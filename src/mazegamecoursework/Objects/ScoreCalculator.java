@@ -1,8 +1,8 @@
 package mazegamecoursework.Objects;
 
 public class ScoreCalculator {
-    private double time;
-    private int distance;
+    private final double time;
+    private final int distance;
 
     public ScoreCalculator(double time, int distance){
         this.time = time;

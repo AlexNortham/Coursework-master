@@ -9,9 +9,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import mazegamecoursework.Objects.DetailValidator;
 import mazegamecoursework.Objects.EmailValidation;
 import mazegamecoursework.Objects.PasswordHasher;
-import mazegamecoursework.SQLClass;
+import mazegamecoursework.Objects.SQLClass;
 
 
 import javax.swing.*;
@@ -42,7 +43,7 @@ public class CreateAccountGUI extends Application {
         email = EnterEmail.getText();
         password = EnterPassword.getText();
         username = EnterUsername.getText();
-        if (!(username.equals("")) && !(password.equals(""))) {
+        if ((new DetailValidator()).Match(email, username, password)) {
             EmailValidation ev = new EmailValidation(email);
             ev.getNewCode();
             code = ev.getCode();
@@ -53,7 +54,9 @@ public class CreateAccountGUI extends Application {
                     ErrorLabel.setText("Email couldn't be sent, please check your email and try again");
                     EnterEmail.setText("");
                     EnterPassword.setText("");
+                    ErrorLabel.setVisible(true);
                 } else {
+                    ErrorLabel.setVisible(false);
                     EnterEmail.setVisible(false);
                     EnterPassword.setVisible(false);
                     EnterUsername.setVisible(false);
@@ -71,12 +74,14 @@ public class CreateAccountGUI extends Application {
                 EnterEmail.setText("");
                 EnterPassword.setText("");
                 EnterUsername.setText("");
+                ErrorLabel.setVisible(true);
             }
         } else {
             ErrorLabel.setText("Invalid username or password, please check and try again");
             EnterEmail.setText("");
             EnterPassword.setText("");
             EnterUsername.setText("");
+            ErrorLabel.setVisible(true);
         }
     }
 

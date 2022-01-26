@@ -6,17 +6,11 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-keepsJavaFXOpen-image: &quot;keepsJavaFXOpen.png&quot;;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mazegamecoursework.GUIs.InitialMenu">
    <children>
-      <Button fx:id="AccountButton" layoutX="226.0" layoutY="189.0" mnemonicParsing="false" onAction="#CreateAccountPressed" prefHeight="0.0" prefWidth="103.0" text="Create Account" textFill="#b5b5b5">
+      <Button fx:id="AccountButton" layoutX="226.0" layoutY="189.0" mnemonicParsing="false" onAction="#CreateAccountPressed" prefHeight="0.0" prefWidth="103.0" text="Create Account" />
+      <Button fx:id="LoginButton" layoutX="230.0" layoutY="262.0" mnemonicParsing="false" onAction="#LoginPressed" prefHeight="22.0" prefWidth="95.0" text="Login" />
+      <Label layoutX="177.0" layoutY="83.0" prefHeight="86.0" prefWidth="247.0" text="Welcome to The Maze">
          <font>
-            <Font name="Constantia" size="12.0" />
-         </font></Button>
-      <Button fx:id="LoginButton" layoutX="230.0" layoutY="262.0" mnemonicParsing="false" onAction="#LoginPressed" prefHeight="22.0" prefWidth="95.0" text="Login" textFill="#b5b5b5">
-         <font>
-            <Font name="Constantia" size="12.0" />
-         </font></Button>
-      <Label layoutX="147.0" layoutY="83.0" prefHeight="86.0" prefWidth="306.0" text="Welcome to Maze Game Coursework (name wip)" textFill="#b5b5b5">
-         <font>
-            <Font name="Constantia" size="12.0" />
+            <Font size="24.0" />
          </font>
       </Label>
       <Button fx:id="quit" layoutX="547.0" layoutY="14.0" mnemonicParsing="false" onAction="#QuitPressed" text="Quit" />

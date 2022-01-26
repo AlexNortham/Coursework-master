@@ -3,18 +3,12 @@ package mazegamecoursework.GUIs;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -22,7 +16,10 @@ import java.util.ArrayList;
 import mazegamecoursework.Objects.MazeGenerator;
 import mazegamecoursework.Objects.MergeSort;
 import mazegamecoursework.Objects.Settings;
-import mazegamecoursework.SQLClass;
+import mazegamecoursework.Objects.SQLClass;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class ResultsScreenGUI extends Application {
 
@@ -85,7 +82,7 @@ public class ResultsScreenGUI extends Application {
         for (int i = 0; i < 5;) {
             if(namesArray[j] == null) {
                 int temp = (int) scoreArray[j];
-                String sqlQuery = ("SELECT UserName FROM Scores WHERE Score=" + Integer.toString(temp));
+                String sqlQuery = ("SELECT UserName FROM Scores WHERE Score=" + temp);
                 Connection con = SQLClass.getConnection();
                 ResultSet resultSet = SQLClass.query(con, sqlQuery);
 
@@ -118,7 +115,7 @@ public class ResultsScreenGUI extends Application {
         scoreLabel.setText("Your score was: "+ Settings.getScore());
     }
 
-    public void playAgainPressed(ActionEvent actionEvent) {
+    public void playAgainPressed(ActionEvent actionEvent) throws UnsupportedAudioFileException, LineUnavailableException, IOException {
 
 
             MazeGenerator mazeGenerator = new MazeGenerator();

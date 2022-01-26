@@ -5,7 +5,7 @@ import javax.swing.*;
 public class Timer extends Thread implements Runnable {
     protected boolean runnable;
     private double time= 0;
-    private JLabel timeLabel;
+    private final JLabel timeLabel;
 
     public Timer(JLabel timeLabel){
         this.timeLabel = timeLabel;
